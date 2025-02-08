@@ -2,17 +2,31 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState("");
 
-  const increment = () => setCount(count + 1);
-  const decrement = () => count && setCount(count - 1);
+  const removeTask = (index) => setTasks(tasks.filter((_, idx) => idx !== index));
+
+  function addTask() {
+    if (task.trim() !== "") {
+      setTasks([...tasks, { id: crypto.randomUUID(), task }]);
+      setTask("");
+    }
+  }
 
   return (
     <>
-      <div>Compteur : {count}</div>
+      <ul>
+        {tasks.map((obj, index) => (
+          <li key={obj.id}>
+            {obj.task} <button onClick={() => removeTask(index)}>Supprimer</button>
+          </li>
+        ))}
+      </ul>
+
       <div>
-        <button onClick={decrement}>-</button>
-        <button onClick={increment}>+</button>
+        <input type="text" placeholder="nouvelle tâche" value={task} onChange={(e) => setTask(e.target.value)} />
+        <button onClick={addTask}>Ajouter</button>
       </div>
     </>
   );
