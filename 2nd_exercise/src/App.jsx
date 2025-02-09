@@ -6,7 +6,7 @@ function App() {
   const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
-    e.preventDefault(); // form case, optionnal here
+    e.preventDefault();
 
     if (email && password) alert("Connexion réussie");
   }
