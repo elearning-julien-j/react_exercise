@@ -2,13 +2,24 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [isVisible, setVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault(); // form case, optionnal here
+
+    if (email && password) alert("Connexion réussie");
+  }
 
   return (
     <>
-      <button onClick={() => setVisible(!isVisible)}>Afficher / Cacher</button>
+      <form>
+        <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" name="email" />
+        <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="mot de passe" name="password" />
+        <button onClick={handleSubmit}>Se connecter</button>
+      </form>
 
-      {isVisible && <p>Contenu visible</p>}
+      {(!email || !password) && <span>Tous les champs sont requis</span>}
     </>
   );
 }
