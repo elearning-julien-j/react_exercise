@@ -4,27 +4,29 @@ import React, { useState } from "react";
 function ParentComponent() {
   const [message, setMessage] = useState("");
 
-  const handleMessageChange = (e) => setMessage(e.target.value.trim() ? e.target.value : "");
-
   return (
     <>
       <h1>Parent</h1>
-      <input type="text" placeholder="Message pour l'enfant" value={message} onChange={handleMessageChange} />
-      <ChildComponent message={message} setMessage={setMessage} />
-
-      {message ? <p>Message retourné par l'enfant : {message}</p> : <p>Message vide</p>}
+      <input placeholder="Message pour l'enfant" value={message} onChange={(e) => setMessage(e.target.value)} />
+      <ChildComponent message={message} onMessageUpdate={setMessage} />
+      <p>Message retourné par l'enfant : {message}</p>
     </>
   );
 }
 
-function ChildComponent({ message, setMessage }) {
-  const handleChildMessageChange = (e) => setMessage(e.target.value);
+function ChildComponent({ message, onMessageUpdate }) {
+  const [childMessage, setChildMessage] = useState(message);
+
+  const handleChange = (e) => {
+    setChildMessage(e.target.value);
+    onMessageUpdate(e.target.value);
+  };
 
   return (
     <>
-      <h1>Enfant</h1>
+      <h2>Enfant</h2>
       {message && <p>Message reçu : {message}</p>}
-      <input type="text" placeholder="Modifier le message" value={message} onChange={handleChildMessageChange} />
+      <input placeholder="Modifier le message" value={childMessage} onChange={handleChange} />
     </>
   );
 }
