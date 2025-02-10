@@ -2,19 +2,19 @@ import { useState } from "react";
 import { useTodos } from "./TodoContext";
 
 export default function TodoForm() {
-  const [todo, setTodo] = useState("");
   const { addTodo } = useTodos();
+  const [input, setInput] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addTodo(todo);
-    setTodo("");
+  const handleSubmit = () => {
+    if (input.trim() === "") return;
+    addTodo(input);
+    setInput("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
-      <button type="submit">Add Todo</button>
-    </form>
+    <div>
+      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Nouvelle tâche" />
+      <button onClick={handleSubmit}>Ajouter</button>
+    </div>
   );
 }

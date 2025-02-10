@@ -1,19 +1,22 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 const TodoContext = createContext();
 
-export const TodoProvider = ({ children }) => {
+export function TodoProvider({ children }) {
   const [todos, setTodos] = useState([]);
 
   const addTodo = (todo) => {
+    if (todo.trim() === "") return;
     setTodos([...todos, todo]);
   };
 
-  const deleteTodo = (index) => {
+  const removeTodo = (index) => {
     setTodos(todos.filter((_, i) => i !== index));
   };
 
-  return <TodoContext value={{ todos, addTodo, deleteTodo }}>{children}</TodoContext>;
-};
+  return <TodoContext.Provider value={{ todos, addTodo, removeTodo }}>{children}</TodoContext.Provider>;
+}
 
-export const useTodos = () => useContext(TodoContext);
+export function useTodos() {
+  return useContext(TodoContext);
+}
