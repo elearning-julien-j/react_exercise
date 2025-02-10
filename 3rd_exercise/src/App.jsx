@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import React, { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+function ParentComponent() {
+  const [message, setMessage] = useState("");
+
+  const handleMessageChange = (e) => setMessage(e.target.value.trim() ? e.target.value : "");
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Parent</h1>
+      <input type="text" placeholder="Message pour l'enfant" value={message} onChange={handleMessageChange} />
+      <ChildComponent message={message} setMessage={setMessage} />
+
+      {message ? <p>Message retourné par l'enfant : {message}</p> : <p>Message vide</p>}
     </>
-  )
+  );
 }
 
-export default App
+function ChildComponent({ message, setMessage }) {
+  const handleChildMessageChange = (e) => setMessage(e.target.value);
+
+  return (
+    <>
+      <h1>Enfant</h1>
+      {message && <p>Message reçu : {message}</p>}
+      <input type="text" placeholder="Modifier le message" value={message} onChange={handleChildMessageChange} />
+    </>
+  );
+}
+
+export default () => <ParentComponent />;
